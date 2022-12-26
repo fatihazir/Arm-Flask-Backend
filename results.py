@@ -5,11 +5,10 @@ def SuccessResult(data, message):
         'Data ': data
     }
 
+
 def ErrorResult(message):
     return {
         'Success': False,
         'Message': message,
         'Data ': {}
     }
-
-

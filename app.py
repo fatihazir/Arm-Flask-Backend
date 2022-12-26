@@ -21,12 +21,13 @@ class ArmManager(Resource):
         maxLength = data['maxLength']
         minLength = data['minLength']
         elementAmount = data['elementAmount']
+        userId = data['userId']
         data = data['data']
 
-        if not CheckIncomingPostDataIsValid(data, minSupport, maxLength, minLength, elementAmount):
+        if not CheckIncomingPostDataIsValid(data, minSupport, maxLength, minLength, elementAmount, userId):
             return ErrorResult(BodyDataError)
 
-        return SuccessResult(RunApriori(data, minSupport, maxLength, minLength, elementAmount), SuccessMessage)
+        return SuccessResult(RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId), SuccessMessage)
 
 
 api.add_resource(ArmManager, '/')
