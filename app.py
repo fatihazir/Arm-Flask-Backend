@@ -4,7 +4,7 @@ from results import SuccessResult, ErrorResult
 from Apriori.apyori import apriori
 from armProvider import RunApriori
 from checkIncomingPostData import CheckIncomingPostDataIsValid
-from messages import AliveMessage, BodyDataError, SuccessMessage
+from messages import AliveMessage, BodyDataError, SuccessMessage, SystematicError
 from werkzeug.exceptions import HTTPException, NotFound
 
 app = Flask(__name__)
@@ -27,7 +27,10 @@ class ArmManager(Resource):
         if not CheckIncomingPostDataIsValid(data, minSupport, maxLength, minLength, elementAmount, userId):
             return ErrorResult(BodyDataError)
 
-        return SuccessResult(RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId), SuccessMessage)
+        try:
+            return SuccessResult(RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId), SuccessMessage)
+        except:
+            return ErrorResult(SystematicError)
 
 
 api.add_resource(ArmManager, '/')
