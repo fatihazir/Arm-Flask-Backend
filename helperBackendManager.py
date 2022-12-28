@@ -27,9 +27,10 @@ def SendDataToBackend(results, transactionGroupId):
         res = requests.post(url, json=obj, verify=False)
 
 
-def CreateTransactionGroupAndForwardToBackend(results, userId):
+def CreateTransactionGroupAndForwardToBackend(results, userId, alias):
     obj = {
         "userId": userId,
+        "alias": alias
     }
     url = "https://localhost:44387/api/UserTransactionGroup/add"
 

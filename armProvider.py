@@ -6,7 +6,7 @@ import pandas as pd
 from helperBackendManager import CreateTransactionGroupAndForwardToBackend
 
 
-def AprioriRulesToList(rules, elementAmount, maxLength, minLength, userId):
+def AprioriRulesToList(rules, elementAmount, maxLength, minLength, userId, alias):
     products = []
 
     for i in range(maxLength):
@@ -59,12 +59,12 @@ def AprioriRulesToList(rules, elementAmount, maxLength, minLength, userId):
 
         by="Confidence", ascending=False).head(elementAmount).values.tolist()
 
-    CreateTransactionGroupAndForwardToBackend(results, userId)
+    CreateTransactionGroupAndForwardToBackend(results, userId, alias)
 
     return results
 
 
-def RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId):
+def RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId, alias):
 
     rulesForApriori = apriori(
         data,
@@ -75,4 +75,4 @@ def RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId):
 
     listedRulesForApriori = list(rulesForApriori)
 
-    return AprioriRulesToList(listedRulesForApriori, elementAmount, maxLength, minLength, userId)
+    return AprioriRulesToList(listedRulesForApriori, elementAmount, maxLength, minLength, userId, alias)
