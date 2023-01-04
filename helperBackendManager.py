@@ -23,7 +23,7 @@ def SendDataToBackend(results, transactionGroupId):
             "lift": str(result[-1])
         }
 
-        url = "https://localhost:44387/api/Transaction/add"
+        url = "http://localhost:5200/api/Transaction/add"
         res = requests.post(url, json=obj, verify=False)
 
 
@@ -32,7 +32,7 @@ def CreateTransactionGroupAndForwardToBackend(results, userId, alias):
         "userId": userId,
         "alias": alias
     }
-    url = "https://localhost:44387/api/UserTransactionGroup/add"
+    url = "http://localhost:5200/api/UserTransactionGroup/add"
 
     res = requests.post(url, json=obj, verify=False)
     SendDataToBackend(results,  res.json()['data']['id'])
