@@ -1,7 +1,9 @@
 import requests
 
+baseUrl = "https://localhost:5201/api"
 
-def SendDataToBackend(results, transactionGroupId):
+
+def SendDataToBackend(results, transactionGroupId, token):
     for result in results:
 
         tempAssociationsString = ""
@@ -23,16 +25,27 @@ def SendDataToBackend(results, transactionGroupId):
             "lift": str(result[-1])
         }
 
-        url = "http://localhost:5200/api/Transaction/add"
-        res = requests.post(url, json=obj, verify=False)
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        }
+
+        url = baseUrl + "/Transaction/add"
+        res = requests.post(url, json=obj, verify=False, headers=headers)
 
 
-def CreateTransactionGroupAndForwardToBackend(results, userId, alias):
+def CreateTransactionGroupAndForwardToBackend(results, userId, token, alias):
     obj = {
         "userId": userId,
         "alias": alias
     }
-    url = "http://localhost:5200/api/UserTransactionGroup/add"
 
-    res = requests.post(url, json=obj, verify=False)
-    SendDataToBackend(results,  res.json()['data']['id'])
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+    }
+
+    url = baseUrl + "/UserTransactionGroup/add"
+
+    res = requests.post(url, json=obj, verify=False, headers=headers)
+    SendDataToBackend(results,  res.json()['data']['id'], token)

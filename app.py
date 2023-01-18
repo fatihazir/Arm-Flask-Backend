@@ -22,14 +22,15 @@ class ArmManager(Resource):
         minLength = data['minLength']
         elementAmount = data['elementAmount']
         userId = data['userId']
+        token = data['token']
         alias = data['alias']
         data = data['data']
 
-        if not CheckIncomingPostDataIsValid(data, minSupport, maxLength, minLength, elementAmount, userId, alias):
+        if not CheckIncomingPostDataIsValid(data, minSupport, maxLength, minLength, elementAmount, userId, token, alias):
             return ErrorResult(BodyDataError)
 
         try:
-            return SuccessResult(RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId, alias), SuccessMessage)
+            return SuccessResult(RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId, token, alias), SuccessMessage)
         except:
             return ErrorResult(SystematicError)
 
