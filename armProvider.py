@@ -55,13 +55,16 @@ def AprioriRulesToList(rules, elementAmount, maxLength, minLength, userId, token
 
     aprioriDf = pd.DataFrame(data=aprioriDf)
 
-    results = aprioriDf[~aprioriDf[f"{minLength}"].isnull()].sort_values(
-
+    positiveResults = aprioriDf[~aprioriDf[f"{minLength}"].isnull()].sort_values(
         by="Confidence", ascending=False).head(elementAmount).values.tolist()
 
-    CreateTransactionGroupAndForwardToBackend(results, userId, token, alias)
+    negativeResults = aprioriDf[~aprioriDf[f"{minLength}"].isnull()].sort_values(
+        by="Confidence", ascending=True).head(elementAmount).values.tolist()
 
-    return results
+    CreateTransactionGroupAndForwardToBackend(
+        positiveResults, negativeResults, userId, token, alias)
+
+    return {}
 
 
 def RunApriori(data, minSupport, maxLength, minLength, elementAmount, userId, token, alias):

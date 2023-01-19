@@ -3,7 +3,7 @@ import requests
 baseUrl = "https://localhost:5201/api"
 
 
-def SendDataToBackend(results, transactionGroupId, token):
+def SendDataToBackend(results, transactionGroupId, token, isPositive):
     for result in results:
 
         tempAssociationsString = ""
@@ -22,7 +22,8 @@ def SendDataToBackend(results, transactionGroupId, token):
             "associations": tempAssociationsString,
             "support": str(result[-3]),
             "confidence": str(result[-2]),
-            "lift": str(result[-1])
+            "lift": str(result[-1]),
+            "isPositive": isPositive
         }
 
         headers = {
@@ -34,7 +35,7 @@ def SendDataToBackend(results, transactionGroupId, token):
         res = requests.post(url, json=obj, verify=False, headers=headers)
 
 
-def CreateTransactionGroupAndForwardToBackend(results, userId, token, alias):
+def CreateTransactionGroupAndForwardToBackend(positiveResults, negativeResults, userId, token, alias):
     obj = {
         "userId": userId,
         "alias": alias
@@ -48,4 +49,5 @@ def CreateTransactionGroupAndForwardToBackend(results, userId, token, alias):
     url = baseUrl + "/UserTransactionGroup/add"
 
     res = requests.post(url, json=obj, verify=False, headers=headers)
-    SendDataToBackend(results,  res.json()['data']['id'], token)
+    SendDataToBackend(positiveResults,  res.json()['data']['id'], token, True)
+    SendDataToBackend(negativeResults,  res.json()['data']['id'], token, False)
