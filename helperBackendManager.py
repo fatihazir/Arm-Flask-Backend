@@ -1,6 +1,6 @@
 import requests
 
-baseUrl = "https://localhost:5201/api"
+baseUrl = "https://aspnetclusters-101958-0.cloudclusters.net/api"
 
 
 def SendDataToBackend(results, transactionGroupId, token, isPositive):
